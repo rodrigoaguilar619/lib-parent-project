@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.parent.project</groupId>
 	<artifactId>lib-parent-project</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -55,20 +55,20 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>joda-time</groupId>
-		    <artifactId>joda-time</artifactId>
-		    <version>2.10</version>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.10</version>
 		</dependency>
-		
+
 		<!-- custom dependencies -->
 		<dependency>
 			<groupId>lib.utils.backend</groupId>
 			<artifactId>lib-utils-backend</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>lib.base.backend</groupId>
 			<artifactId>lib-base-backend</artifactId>
@@ -97,5 +97,29 @@
 	</dependencies>
 
 	<build></build>
+
+	<profiles>
+		<profile>
+			<id>generate_jpa_metamodel</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>3.7.0</version>
+						<configuration>
+							<annotationProcessorPaths>
+								<path>
+									<groupId>org.hibernate</groupId>
+									<artifactId>hibernate-jpamodelgen</artifactId>
+									<version>5.3.23.Final</version>
+								</path>
+							</annotationProcessorPaths>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
