@@ -21,6 +21,8 @@
 		<junit-jupiter.version>5.7.1</junit-jupiter.version>
 		<custom.base.version>1.0.0</custom.base.version>
 		<joda.time.version>2.10</joda.time.version>
+		<commons.lang.version>2.6</commons.lang.version>
+		<commons.csv.version>1.1</commons.csv.version>
 	</properties>
 
 	<dependencies>
@@ -56,10 +58,10 @@
 		</dependency>
 		
 		<dependency>
-	    <groupId>org.junit.jupiter</groupId>
-	    <artifactId>junit-jupiter-api</artifactId>
-	    <scope>test</scope>
-	</dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
+		    <scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -78,8 +80,20 @@
 		</dependency>
 		
 		<dependency>
+		    <groupId>commons-lang</groupId>
+		    <artifactId>commons-lang</artifactId>
+		    <version>${commons.lang.version}</version>
+		</dependency>
+		
+		<dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-lang3</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-csv</artifactId>
+		    <version>${commons.csv.version}</version>
 		</dependency>
 
 		<!-- custom dependencies -->
