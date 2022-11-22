@@ -139,6 +139,9 @@
 	<profiles>
 		<profile>
 			<id>generate_jpa_metamodel</id>
+			<properties>
+                <prop.packaging.type>jar</prop.packaging.type>
+            </properties>
 			<build>
 				<plugins>
 					<plugin>
