@@ -323,6 +323,44 @@
 	            </plugins>
             </build>
         </profile>
+        <profile>
+            <id>prod_heliohost</id>
+            <properties>
+                <prop.packaging.type>war</prop.packaging.type>
+            </properties>
+            <build>
+            	<directory>target_prod_heliohost</directory>
+	            <plugins>
+	            	<plugin>
+	            	<groupId>org.apache.maven.plugins</groupId>
+	            	<artifactId>maven-antrun-plugin</artifactId>
+	            	<executions>
+	            		<execution>
+	            			<phase>prepare-package</phase>
+	            			<goals>
+	            				<goal>run</goal>
+	            			</goals>
+	            			<configuration>
+	            				<target>
+	            					<copy todir="${project.build.outputDirectory}" overwrite="true">
+	            						<fileset dir="src/main/resources/config_properties/prod_heliohost/"></fileset>
+	            					</copy>
+	            					<delete dir="${project.build.outputDirectory}/config_properties"></delete>
+	            				</target>
+	            			</configuration>
+	            		</execution>
+	            	</executions>
+	            	</plugin>
+	            	<plugin>
+		            	<groupId>org.springframework.boot</groupId>
+		            	<artifactId>spring-boot-maven-plugin</artifactId>
+		            	<configuration>
+		            		<mainClass>${prop.main.class.heliohost}</mainClass>
+		            	</configuration>
+	            	</plugin>
+	            </plugins>
+            </build>
+        </profile>
 	</profiles>
 
 </project>
