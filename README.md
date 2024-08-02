@@ -1,5 +1,5 @@
 # lib-parent-project
-This project was generated with Java JDK 21 and Spring Boot 3
+This project was generated with Java JDK 21 and Spring Boot 3. Configure plugins for sonarqube, jacoco unit test anilizer.
 
 # Project Structure
 	- Implementation of common depencences

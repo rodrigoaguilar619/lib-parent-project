@@ -132,8 +132,41 @@
 	                <artifactId>sonar-maven-plugin</artifactId>
 	                <version>${sonarqube.version}</version>
 	            </plugin>
+	            <plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>0.8.11</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>prepare-agent</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>report</id>
+							<phase>test</phase>
+							<goals>
+								<goal>report</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 	        </plugins>
 	    </pluginManagement>
+	    <plugins>
+			<plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+			</plugin>
+		    <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-surefire-plugin</artifactId>
+	        </plugin>
+		</plugins>
 	</build>
 
 	<profiles>
@@ -147,13 +180,11 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-compiler-plugin</artifactId>
-<!--						<version>3.7.0</version>-->
 						<configuration>
 							<annotationProcessorPaths>
 								<path>
 									<groupId>org.hibernate</groupId>
 									<artifactId>hibernate-jpamodelgen</artifactId>
-<!--									<version>5.3.23.Final</version>-->
 								</path>
 							</annotationProcessorPaths>
 						</configuration>
