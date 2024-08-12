@@ -15,6 +15,7 @@
 	</parent>
 
 	<properties>
+		<skip.antrun>true</skip.antrun>
 		<!-- General properties -->
 		<java.version>21</java.version>
 		<sonarqube.version>3.10.0.2594</sonarqube.version>
@@ -181,6 +182,34 @@
 						</execution>
 					</executions>
 				</plugin>
+				<plugin>
+	            	<groupId>org.apache.maven.plugins</groupId>
+	            	<artifactId>maven-antrun-plugin</artifactId>
+	            	<executions>
+	            		<execution>
+	            			<phase>prepare-package</phase>
+	            			<goals>
+	            				<goal>run</goal>
+	            			</goals>
+	            			<configuration>
+	            				<target>
+	            					<copy file="src/main/resources/config_properties/application-${profile}.properties"
+						      				tofile="${project.build.outputDirectory}/application.properties" 
+						      				overwrite="true"/>
+	            					<delete dir="${project.build.outputDirectory}/config_properties"></delete>
+	            				</target>
+	            				<skip>${skip.antrun}</skip>
+	            			</configuration>
+	            		</execution>
+	            	</executions>
+            	</plugin>
+            	<plugin>
+	            	<groupId>org.springframework.boot</groupId>
+	            	<artifactId>spring-boot-maven-plugin</artifactId>
+	            	<configuration>
+	            		<mainClass>${prop.main.class}</mainClass>
+	            	</configuration>
+	            </plugin>
 	        </plugins>
 	    </pluginManagement>
 	    <plugins>
@@ -196,6 +225,14 @@
 	            <groupId>org.apache.maven.plugins</groupId>
 	            <artifactId>maven-surefire-plugin</artifactId>
 	        </plugin>
+	        <plugin>
+            	<groupId>org.apache.maven.plugins</groupId>
+            	<artifactId>maven-antrun-plugin</artifactId>
+	        </plugin>
+	        <plugin>
+	        	<groupId>org.springframework.boot</groupId>
+	        	<artifactId>spring-boot-maven-plugin</artifactId>
+	    	</plugin>
 		</plugins>
 	</build>
 
@@ -230,96 +267,27 @@
             <properties>
                 <prop.packaging.type>jar</prop.packaging.type>
             </properties>
-            <build>
-            <plugins>
-	            	<plugin>
-	            	<groupId>org.apache.maven.plugins</groupId>
-	            	<artifactId>maven-antrun-plugin</artifactId>
-	            	</plugin>
-	            	<plugin>
-		            	<groupId>org.springframework.boot</groupId>
-		            	<artifactId>spring-boot-maven-plugin</artifactId>
-		            	<configuration>
-		            		<mainClass>${prop.main.class}</mainClass>
-		            	</configuration>
-	            	</plugin>
-	            </plugins>
-            </build>
         </profile>
 		<profile>
             <id>dev</id>
             <properties>
                 <prop.packaging.type>jar</prop.packaging.type>
+                <profile>dev</profile>
+                <skip.antrun>false</skip.antrun>
             </properties>
             <build>
             	<directory>target_dev</directory>
-	            <plugins>
-	            	<plugin>
-	            	<groupId>org.apache.maven.plugins</groupId>
-	            	<artifactId>maven-antrun-plugin</artifactId>
-	            	<executions>
-	            		<execution>
-	            			<phase>prepare-package</phase>
-	            			<goals>
-	            				<goal>run</goal>
-	            			</goals>
-	            			<configuration>
-	            				<target>
-	            					<copy todir="${project.build.outputDirectory}" overwrite="true">
-	            						<fileset dir="src/main/resources/config_properties/dev/"></fileset>
-	            					</copy>
-	            					<delete dir="${project.build.outputDirectory}/config_properties"></delete>
-	            				</target>
-	            			</configuration>
-	            		</execution>
-	            	</executions>
-	            	</plugin>
-	            	<plugin>
-		            	<groupId>org.springframework.boot</groupId>
-		            	<artifactId>spring-boot-maven-plugin</artifactId>
-		            	<configuration>
-		            		<mainClass>${prop.main.class}</mainClass>
-		            	</configuration>
-	            	</plugin>
-	            </plugins>
             </build>
         </profile>
         <profile>
             <id>prod</id>
             <properties>
                 <prop.packaging.type>jar</prop.packaging.type>
+                <profile>prod</profile>
+                <skip.antrun>false</skip.antrun>
             </properties>
             <build>
             	<directory>target_prod</directory>
-	            <plugins>
-	            	<plugin>
-	            	<groupId>org.apache.maven.plugins</groupId>
-	            	<artifactId>maven-antrun-plugin</artifactId>
-	            	<executions>
-	            		<execution>
-	            			<phase>prepare-package</phase>
-	            			<goals>
-	            				<goal>run</goal>
-	            			</goals>
-	            			<configuration>
-	            				<target>
-	            					<copy todir="${project.build.outputDirectory}" overwrite="true">
-	            						<fileset dir="src/main/resources/config_properties/prod/"></fileset>
-	            					</copy>
-	            					<delete dir="${project.build.outputDirectory}/config_properties"></delete>
-	            				</target>
-	            			</configuration>
-	            		</execution>
-	            	</executions>
-	            	</plugin>
-	            	<plugin>
-		            	<groupId>org.springframework.boot</groupId>
-		            	<artifactId>spring-boot-maven-plugin</artifactId>
-		            	<configuration>
-		            		<mainClass>${prop.main.class}</mainClass>
-		            	</configuration>
-	            	</plugin>
-	            </plugins>
             </build>
         </profile>
         <profile>
