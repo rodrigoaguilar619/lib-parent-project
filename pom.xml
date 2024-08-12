@@ -248,6 +248,38 @@
 	            	<artifactId>spring-boot-maven-plugin</artifactId>
 	            	<configuration>
 	            		<mainClass>${prop.main.class}</mainClass>
+	            		<excludes>
+				            <!-- Exclude test libraries -->
+				            <exclude>
+				                <groupId>org.springframework.boot</groupId>
+				                <artifactId>spring-boot-starter-test</artifactId>
+				            </exclude>
+				            <exclude>
+				                <groupId>org.springframework.security</groupId>
+				                <artifactId>spring-security-test</artifactId>
+				            </exclude>
+				            <exclude>
+				                <groupId>org.mockito</groupId>
+				                <artifactId>mockito-core</artifactId>
+				            </exclude>
+				            <exclude>
+				                <groupId>org.hamcrest</groupId>
+				                <artifactId>hamcrest-library</artifactId>
+				            </exclude>
+				
+				            <!-- Exclude development tools -->
+				            <exclude>
+				                <groupId>org.springframework.boot</groupId>
+				                <artifactId>spring-boot-devtools</artifactId>
+				            </exclude>
+				
+				            <!-- Exclude optional tools -->
+				            
+				            <exclude>
+				                <groupId>org.projectlombok</groupId>
+				                <artifactId>lombok</artifactId>
+				            </exclude>
+				        </excludes>
 	            	</configuration>
 	            </plugin>
 	        </plugins>
