@@ -15,10 +15,12 @@
 	</parent>
 
 	<properties>
-		<skip.antrun>true</skip.antrun>
 		<!-- General properties -->
+		<skip.antrun>true</skip.antrun>
+		<propertiesFile>src/main/resources/application.properties</propertiesFile>
 		<java.version>21</java.version>
 		<sonarqube.version>3.10.0.2594</sonarqube.version>
+		<org.codehaus.mojo.version>1.0.0</org.codehaus.mojo.version>
 		<junit-jupiter.version>5.10.0</junit-jupiter.version>
 		<custom.base.version>3.0.0</custom.base.version>
 		<joda.time.version>2.10</joda.time.version>
@@ -51,6 +53,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
@@ -59,19 +62,21 @@
 		</dependency>
 		
 		<dependency>
-		    <groupId>org.junit.jupiter</groupId>
-		    <artifactId>junit-jupiter-api</artifactId>
-		    <scope>test</scope>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 		
+		<!-- Database Drivers -->
 		<dependency>
 		    <groupId>com.mysql</groupId>
 		    <artifactId>mysql-connector-j</artifactId>
 		</dependency>
 		
 		<dependency>
-		    <groupId>org.postgresql</groupId>
-		    <artifactId>postgresql</artifactId>
+		    <groupId>com.smattme</groupId>
+		    <artifactId>mysql-backup4j</artifactId>
+		    <version>1.0.0</version>
 		</dependency>
 		
 		<dependency>
@@ -123,11 +128,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
+		
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
+		    <scope>test</scope>
 		</dependency>
 		
 		<!-- Flyway dependencies -->
@@ -151,13 +156,29 @@
 		<dependency>
 		    <groupId>org.projectlombok</groupId>
 		    <artifactId>lombok</artifactId>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<!-- other dependences -->
+		<dependency>
+		  <groupId>org.hamcrest</groupId>
+		  <artifactId>hamcrest-library</artifactId>
+		  <scope>test</scope>
 		</dependency>
 
 	</dependencies>
 
 	<build>
+		<finalName>${jar.name}</finalName>
 	    <pluginManagement>
 	        <plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+						<skipTests>${test.skip}</skipTests>
+					</configuration>
+				</plugin>
 	            <plugin>
 	                <groupId>org.sonarsource.scanner.maven</groupId>
 	                <artifactId>sonar-maven-plugin</artifactId>
@@ -204,6 +225,25 @@
 	            	</executions>
             	</plugin>
             	<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>properties-maven-plugin</artifactId>
+					<version>${org.codehaus.mojo.version}</version>
+					<executions>
+						<execution>
+							<id>propertiesFromFile</id>
+							<phase>initialize</phase>
+							<goals>
+								<goal>read-project-properties</goal>
+							</goals>
+							<configuration>
+								<files>
+									<file>${basedir}/${propertiesFile}</file>
+								</files>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+            	<plugin>
 	            	<groupId>org.springframework.boot</groupId>
 	            	<artifactId>spring-boot-maven-plugin</artifactId>
 	            	<configuration>
@@ -233,6 +273,17 @@
 	        	<groupId>org.springframework.boot</groupId>
 	        	<artifactId>spring-boot-maven-plugin</artifactId>
 	    	</plugin>
+	    	<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<inherited>false</inherited>
+				<executions>
+					<execution>
+						<id>propertiesFromFile</id>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -293,39 +344,12 @@
         <profile>
             <id>prod_demo</id>
             <properties>
-                <prop.packaging.type>war</prop.packaging.type>
+                <prop.packaging.type>jar</prop.packaging.type>
+                <profile>prod_demo</profile>
+                <skip.antrun>false</skip.antrun>
             </properties>
             <build>
             	<directory>target_prod_demo</directory>
-	            <plugins>
-	            	<plugin>
-	            	<groupId>org.apache.maven.plugins</groupId>
-	            	<artifactId>maven-antrun-plugin</artifactId>
-	            	<executions>
-	            		<execution>
-	            			<phase>prepare-package</phase>
-	            			<goals>
-	            				<goal>run</goal>
-	            			</goals>
-	            			<configuration>
-	            				<target>
-	            					<copy todir="${project.build.outputDirectory}" overwrite="true">
-	            						<fileset dir="src/main/resources/config_properties/prod_demo/"></fileset>
-	            					</copy>
-	            					<delete dir="${project.build.outputDirectory}/config_properties"></delete>
-	            				</target>
-	            			</configuration>
-	            		</execution>
-	            	</executions>
-	            	</plugin>
-	            	<plugin>
-		            	<groupId>org.springframework.boot</groupId>
-		            	<artifactId>spring-boot-maven-plugin</artifactId>
-		            	<configuration>
-		            		<mainClass>${prop.main.class}</mainClass>
-		            	</configuration>
-	            	</plugin>
-	            </plugins>
             </build>
         </profile>
 	</profiles>
