@@ -384,6 +384,17 @@
             	<directory>target_prod_demo</directory>
             </build>
         </profile>
+        <profile>
+            <id>docker</id>
+            <properties>
+                <prop.packaging.type>jar</prop.packaging.type>
+                <profile>docker</profile>
+                <skip.antrun>false</skip.antrun>
+            </properties>
+            <build>
+            	<directory>target_docker</directory>
+            </build>
+        </profile>
 	</profiles>
 
 </project>
