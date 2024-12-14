@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.parent.project</groupId>
 	<artifactId>lib-parent-project</artifactId>
-	<version>4.0.0</version>
+	<version>5.0.0</version>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -22,7 +22,6 @@
 		<sonarqube.version>3.10.0.2594</sonarqube.version>
 		<org.codehaus.mojo.version>1.0.0</org.codehaus.mojo.version>
 		<junit-jupiter.version>5.10.0</junit-jupiter.version>
-		<custom.base.version>3.0.0</custom.base.version>
 		<joda.time.version>2.10</joda.time.version>
 		<commons.lang.version>2.6</commons.lang.version>
 		<commons.csv.version>1.1</commons.csv.version>
@@ -107,13 +106,6 @@
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-csv</artifactId>
 		    <version>${commons.csv.version}</version>
-		</dependency>
-
-		<!-- custom dependencies -->
-		<dependency>
-			<groupId>lib.base.backend</groupId>
-			<artifactId>lib-base-backend</artifactId>
-			<version>${custom.base.version}</version>
 		</dependency>
 
 		<!-- Test dependencies -->
